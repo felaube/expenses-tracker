@@ -1,1 +1,11 @@
 env/
+
+*.pyc
+
+.vscode/
+
+debug.log
+
+credentials.json
+
+token.pickle
