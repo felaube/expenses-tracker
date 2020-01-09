@@ -1,13 +1,19 @@
 import os
+import sys
 import pickle
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from drive_handler import DriveHandler
 from spreadsheet_handler import SpreadsheetHandler
+from PyQt5.QtWidgets import QApplication, QPushButton, QMessageBox,\
+                            QDoubleSpinBox, QWidget, QVBoxLayout,\
+                            QHBoxLayout, QDateEdit
+from PyQt5.QtCore import QDate
 
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
+          'https://www.googleapis.com/auth/drive.metadata.readonly']
 
 CREDS = None
 # The file token.pickle stores the user's access and refresh tokens, and is
@@ -28,28 +34,45 @@ if not CREDS or not CREDS.valid:
     with open('token.pickle', 'wb') as token:
         pickle.dump(CREDS, token)
 
-SERVICE = build('sheets', 'v4', credentials=CREDS)
-
-"""
-    Creating a Spreadsheet
-"""
-# spreadsheet = {
-#     'properties': {
-#         'title': 'expenses_tracker'
-#     }
-# }
-# spreadsheet = SERVICE.spreadsheets().create(body=spreadsheet,
-#                                             fields='spreadsheetId').execute()
-
-# print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
 
 spreadsheet_hdl = SpreadsheetHandler(CREDS)
+spreadsheet_hdl.create_spreadsheet()
 
-print(spreadsheet_hdl.create_spreadsheet())
+# data = [["3", "4"], ["=2+3", "=85"], ["34", "15"]]
+# spreadsheet_hdl.write_data(data, 'A2')
 
-a, b, c, d, e, f = input("Insira 6 valore: ").split()
 
-data = [[a, b], [c, d], [e, f]]
-spreadsheet_hdl.write_data(data, 'A2')
+def submit_button_clicked():
+    alert = QMessageBox()
+    data = [[str(doublespinBox.value())]]
+    spreadsheet_hdl.append_data(data)
+    alert.setText("The expense was submitted!")
+    alert.exec_()
 
-spreadsheet_hdl.append_data(data)
+
+app = QApplication([])
+window = QWidget()
+verticallayout = QVBoxLayout()
+horizontallayout = QHBoxLayout()
+
+today = QDate.currentDate()
+
+date = QDateEdit(calendarPopup=True, displayFormat="dd/MM/yy", date=today)
+submitbutton = QPushButton('Click')
+doublespinBox = QDoubleSpinBox(maximum=1000, decimals=2, minimum=0)
+
+submitbutton.clicked.connect(submit_button_clicked)
+
+horizontallayout.addWidget(doublespinBox)
+horizontallayout.addWidget(date)
+
+verticallayout.addLayout(horizontallayout)
+verticallayout.addWidget(submitbutton)
+
+window.setLayout(verticallayout)
+
+window.show()
+
+sys.exit(app.exec_())
+
+# a, b, c, d, e, f = input("Insira 6 valore: ").split()

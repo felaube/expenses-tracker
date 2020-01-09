@@ -1,38 +1,79 @@
 import os
+import sys
 import pickle
+import json
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from drive_handler import DriveHandler
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+
+# TODO: Understand what does this "type" argument means
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args,
+                                                                 **kwargs)
+        return cls._instances[cls]
 
 
-class SpreadsheetHandler:
-    def __init__(self, credentials, spreadsheet_id=None):
+# TODO: Undestand metaclass implementation
+class SpreadsheetHandler(metaclass=Singleton):
+    def __init__(self, credentials=None, file_name=None, spreadsheet_id=None):
         self.credentials = credentials
         self.service = build('sheets', 'v4', credentials=self.credentials)
         self.spreadsheet_id = spreadsheet_id
+        self.file_name = file_name
 
     def create_spreadsheet(self):
 
         drv_hdl = DriveHandler(self.credentials)
-        # Check for existing spreadsheet:
-        spreadsheet_id = drv_hdl.get_spreadsheet_id()
 
-        if spreadsheet_id:
+        # Check for existing spreadsheet:
+        try:
+            spreadsheet_id = drv_hdl.get_spreadsheet_id(self.file_name)
             self.spreadsheet_id = spreadsheet_id
-            return spreadsheet_id
-        else:
+        except FileNotFoundError:
             spreadsheet = {
-                'properties': {
-                    'title': 'expenses_tracker'
-                }
+                "properties": {
+                    "title": self.file_name
+                },
+                "sheets": [
+                    {
+                        "properties": {
+                            "sheetId": 1,
+                            "title": "Expenses"
+                        }
+                    },
+                    {
+                        "properties": {
+                            "sheetId": 2,
+                            "title": "Income"
+                        }
+                    },
+                    {
+                        "properties": {
+                            "sheetId": 3,
+                            "title": "Summary"
+                        }
+                    }
+                ]
             }
             spreadsheet = self.service.spreadsheets().create(body=spreadsheet,
-                                                             fields='spreadsheetId').execute()
-            self.spreadsheet_id = spreadsheet_id
-            return spreadsheet.get('spreadsheetId')
+                                                             fields="spreadsheetId").execute()
+
+            self.spreadsheet_id = spreadsheet.get('spreadsheetId')
+            try:
+                self.format_spreadsheet()
+            # TODO: remove this try except block
+            except:
+                drv_hdl.service.files().delete(fileId=self.spreadsheet_id).execute()
+                sys.exit()
+
+        finally:
+            return self.spreadsheet_id
 
     def write_data(self, data, range, value_input_option='USER_ENTERED'):
         body = {
@@ -43,7 +84,8 @@ class SpreadsheetHandler:
             valueInputOption=value_input_option, body=body).execute()
         print('{0} cells updated.'.format(result.get('updatedCells')))
 
-    def append_data(self, data, range='Sheet1', value_input_option='USER_ENTERED'):
+    def append_data(self, data, range='Sheet1',
+                    value_input_option='USER_ENTERED'):
         body = {
             'values': data
         }
@@ -53,3 +95,11 @@ class SpreadsheetHandler:
         print('{0} cells appended.'.format(result
                                            .get('updates')
                                            .get('updatedCells')))
+
+    def format_spreadsheet(self):
+        with open('spreadsheet_formatting.json') as json_file:
+            body = json.load(json_file, )
+
+        self.service.spreadsheets().batchUpdate(
+                    spreadsheetId=self.spreadsheet_id,
+                    body=body).execute()
