@@ -1,6 +1,126 @@
 {
     "requests": [
         {
+            "updateCells": {
+                "rows": [
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "1"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "2"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "3"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "4"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "5"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "6"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "7"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "8"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "9"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "10"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "11"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "12"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "fields": "userEnteredValue.stringValue",
+                "start": {
+                    "sheetId": 4,
+                    "rowIndex": 0,
+                    "columnIndex": 0
+                }
+            }
+        },
+        {
             "repeatCell": {
                 "range": {
                     "sheetId": 1,
@@ -94,7 +214,7 @@
                         "values": [
                             {
                                 "userEnteredValue": {
-                                    "stringValue": "Mes"
+                                    "stringValue": "Mês"
                                 }
                             },
                             {
@@ -114,7 +234,7 @@
                             },
                             {
                                 "userEnteredValue": {
-                                    "stringValue": "Especificacoes"
+                                    "stringValue": "Especificação"
                                 }
                             }
                         ]
@@ -242,6 +362,428 @@
                 },
                 "fields": "userEnteredFormat.numberFormat"
             }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 3,
+                    "startRowIndex": 1,
+                    "endRowIndex": 2,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 12
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.24,
+                            "green": 0.52,
+                            "blue": 0.78
+                        },
+                        "textFormat": {
+                            "bold": true
+                        },
+                        "horizontalAlignment": "CENTER"
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor, userEnteredFormat.textFormat, userEnteredFormat.horizontalAlignment"
+            }
+        },
+        {
+            "updateCells": {
+                "rows": [
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Gastos"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Bandejão"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Supermercado"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Contas"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Lanche"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Almoço"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Ônibus"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Outros"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Total"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "VR"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Total-VR"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Janeiro"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "formulaValue": "=SUMIFS(Expenses!$D:$D, Expenses!$B:$B, Resources!$A1, Expenses!$E:$E, C$3)"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "formulaValue": "=SUM($C4:$I4)"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "formulaValue": "=SUMIFS(Expenses!$D:$D, Expenses!$B:$B, Resources!$A1, Expenses!$H:$H, K$3)"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "formulaValue": "=$J4-$K4"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "fields": "userEnteredValue.stringValue, userEnteredValue.formulaValue",
+                "start": {
+                    "sheetId": 3,
+                    "rowIndex": 1,
+                    "columnIndex": 1
+                }
+            }
+        },
+        {
+            "copyPaste": {
+                "source": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 4,
+                    "startColumnIndex": 2,
+                    "endColumnIndex": 3
+                },
+                "destination": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 2,
+                    "endColumnIndex": 9
+                },
+                "pasteType": "PASTE_FORMULA"
+            }
+        },
+        {
+            "copyPaste": {
+                "source": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 4,
+                    "startColumnIndex": 10,
+                    "endColumnIndex": 11
+                },
+                "destination": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 10,
+                    "endColumnIndex": 11
+                },
+                "pasteType": "PASTE_FORMULA"
+            }
+        },
+        {
+            "copyPaste": {
+                "source": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 4,
+                    "startColumnIndex": 9,
+                    "endColumnIndex": 10
+                },
+                "destination": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 9,
+                    "endColumnIndex": 10
+                },
+                "pasteType": "PASTE_FORMULA"
+            }
+        },
+        {
+            "copyPaste": {
+                "source": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 4,
+                    "startColumnIndex": 11,
+                    "endColumnIndex": 12
+                },
+                "destination": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 11,
+                    "endColumnIndex": 17
+                },
+                "pasteType": "PASTE_FORMULA"
+            }
+        },
+        {
+            "updateCells": {
+                "rows": [
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Fevereiro"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Março"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Abril"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Maio"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Junho"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Julho"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Agosto"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Setembro"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Outubro"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Novembro"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Dezembro"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "fields": "userEnteredValue.stringValue",
+                "start": {
+                    "sheetId": 3,
+                    "rowIndex": 4,
+                    "columnIndex": 1
+                }
+            }
+        },
+        {
+            "updateBorders": {
+                "range":{
+                    "sheetId": 3,
+                    "startRowIndex": 1,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 12
+                },
+                "top": {
+                    "style": "SOLID"
+                },
+                "bottom": {
+                    "style": "SOLID"
+                },
+                "left": {
+                    "style": "SOLID"
+                },
+                "right": {
+                    "style": "SOLID"
+                },
+                "innerHorizontal": {
+                    "style": "SOLID"
+                },
+                "innerVertical": {
+                    "style": "SOLID"
+                }
+            }
+        },
+        {
+            "addConditionalFormatRule": {
+                "rule": {
+                    "ranges": {
+                        "sheetId": 3,
+                        "startRowIndex": 2,
+                        "endRowIndex": 15,
+                        "startColumnIndex": 1,
+                        "endColumnIndex": 12
+                    },
+                    "booleanRule": {
+                        "condition": {
+                            "type": "CUSTOM_FORMULA",
+                            "values": [{
+                                "userEnteredValue":
+                                    "=MOD(ROW(),2)=0"
+                            }]
+                        },
+                        "format": {
+                            "backgroundColor": {
+                                "red": 0.62,
+                                "green": 0.77,
+                                "blue": 0.91
+                            }
+                        }
+                    }
+                },
+                "index": 0
+            }
+        },
+        {
+            "mergeCells": {
+                "range": {
+                    "sheetId": 3,
+                    "startRowIndex": 1,
+                    "endRowIndex": 2,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 12
+                },
+                "mergeType": "MERGE_ALL"
+                }
         }
     ]
 }

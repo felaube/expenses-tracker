@@ -58,6 +58,13 @@ class SpreadsheetHandler(metaclass=Singleton):
                             "sheetId": 3,
                             "title": "Summary"
                         }
+                    },
+                    {
+                        "properties": {
+                            "sheetId": 4,
+                            "title": "Resources",
+                            "hidden": True
+                        }
                     }
                 ]
             }
@@ -70,7 +77,6 @@ class SpreadsheetHandler(metaclass=Singleton):
             # TODO: remove this try except block
             except:
                 drv_hdl.service.files().delete(fileId=self.spreadsheet_id).execute()
-                sys.exit()
 
         finally:
             return self.spreadsheet_id
@@ -97,8 +103,8 @@ class SpreadsheetHandler(metaclass=Singleton):
                                            .get('updatedCells')))
 
     def format_spreadsheet(self):
-        with open('spreadsheet_formatting.json') as json_file:
-            body = json.load(json_file, )
+        with open('spreadsheet_formatting.json', encoding='utf-8') as json_file:
+            body = json.load(json_file)
 
         self.service.spreadsheets().batchUpdate(
                     spreadsheetId=self.spreadsheet_id,
