@@ -1,0 +1,247 @@
+{
+    "requests": [
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 1,
+                    "startRowIndex": 0,
+                    "endRowIndex": 1000000000,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1000000000
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "textFormat": {
+                            "fontFamily": "Calibri",
+                            "fontSize": 11
+                        }
+                        
+                    }
+                },
+                "fields": "userEnteredFormat.textFormat"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 2,
+                    "startRowIndex": 0,
+                    "endRowIndex": 1000000000,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1000000000
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "textFormat": {
+                            "fontFamily": "Calibri",
+                            "fontSize": 11
+                        }
+                        
+                    }
+                },
+                "fields": "userEnteredFormat.textFormat"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 3,
+                    "startRowIndex": 0,
+                    "endRowIndex": 1000000000,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1000000000
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "textFormat": {
+                            "fontFamily": "Calibri",
+                            "fontSize": 11
+                        }
+                        
+                    }
+                },
+                "fields": "userEnteredFormat.textFormat"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 1,
+                    "startRowIndex": 2,
+                    "endRowIndex": 3,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 6
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.24,
+                            "green": 0.52,
+                            "blue": 0.78
+                        },
+                        "textFormat": {
+                            "bold": true
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor, userEnteredFormat.textFormat"
+            }
+        },
+        {
+            "updateCells": {
+                "rows": [
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Mes"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Data"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Valor"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Categoria"
+                                }
+                            },
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Especificacoes"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "fields": "userEnteredValue.stringValue",
+                "start": {
+                    "sheetId": 1,
+                    "rowIndex": 2,
+                    "columnIndex": 1
+                }
+            }
+        },
+        {
+            "addConditionalFormatRule": {
+                "rule": {
+                    "ranges": {
+                        "sheetId": 1,
+                        "startRowIndex": 3,
+                        "endRowIndex": 1000000000,
+                        "startColumnIndex": 1,
+                        "endColumnIndex": 6
+                    },
+                    "booleanRule": {
+                        "condition": {
+                            "type": "CUSTOM_FORMULA",
+                            "values": [{
+                                "userEnteredValue":
+                                    "=MOD(ROW(),2)=0"
+                            }]
+                        },
+                        "format": {
+                            "backgroundColor": {
+                                "red": 0.62,
+                                "green": 0.77,
+                                "blue": 0.91
+                            }
+                        }
+                    }
+                },
+                "index": 0
+            }
+        },
+        {
+            "updateBorders": {
+                "range":{
+                    "sheetId": 1,
+                    "startRowIndex": 2,
+                    "endRowIndex": 1000000000,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 6
+                },
+                "top": {
+                    "style": "SOLID"
+                },
+                "bottom": {
+                    "style": "SOLID"
+                },
+                "left": {
+                    "style": "SOLID"
+                },
+                "right": {
+                    "style": "SOLID"
+                },
+                "innerHorizontal": {
+                    "style": "SOLID"
+                },
+                "innerVertical": {
+                    "style": "SOLID"
+                }
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 1,
+                    "startRowIndex": 2,
+                    "endRowIndex": 1000000000,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 6
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "horizontalAlignment": "CENTER"
+                    }
+                },
+                "fields": "userEnteredFormat.horizontalAlignment"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 1,
+                    "startRowIndex": 3,
+                    "endRowIndex": 1000000000,
+                    "startColumnIndex": 2,
+                    "endColumnIndex": 3
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "numberFormat": {
+                            "type": "DATE",
+                            "pattern": "dd-mmm-yy"
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.numberFormat"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 1,
+                    "startRowIndex": 3,
+                    "endRowIndex": 1000000000,
+                    "startColumnIndex": 3,
+                    "endColumnIndex": 4
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "numberFormat": {
+                            "type": "CURRENCY"
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.numberFormat"
+            }
+        }
+    ]
+}
