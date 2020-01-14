@@ -101,11 +101,18 @@ class SpreadsheetHandler(metaclass=Singleton):
         print('{0} cells appended.'.format(result
                                            .get('updates')
                                            .get('updatedCells')))
+        self.sort_by_date()
 
-    def format_spreadsheet(self):
-        with open('spreadsheet_formatting.json', encoding='utf-8') as json_file:
+    def update_spreadsheet(self, json_file):
+        with open(json_file, encoding='utf-8') as json_file:
             body = json.load(json_file)
 
         self.service.spreadsheets().batchUpdate(
                     spreadsheetId=self.spreadsheet_id,
                     body=body).execute()
+
+    def format_spreadsheet(self):
+        self.update_spreadsheet('spreadsheet_formatting.json')
+
+    def sort_by_date(self):
+        self.update_spreadsheet('sort_by_date.json')
