@@ -6,6 +6,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from drive_handler import DriveHandler
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 
 # TODO: Understand what does this "type" argument means
@@ -112,7 +113,9 @@ class SpreadsheetHandler(metaclass=Singleton):
                     body=body).execute()
 
     def format_spreadsheet(self):
-        self.update_spreadsheet('spreadsheet_formatting.json')
+        appctx = ApplicationContext()
+        self.update_spreadsheet(appctx.get_resource("spreadsheet_formatting.json"))
 
     def sort_by_date(self):
-        self.update_spreadsheet('sort_by_date.json')
+        appctx = ApplicationContext()
+        self.update_spreadsheet(appctx.get_resource("sort_by_date.json"))

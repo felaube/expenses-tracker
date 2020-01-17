@@ -1,3 +1,4 @@
+
 import os
 import sys
 import pickle
@@ -28,8 +29,7 @@ if __name__ == '__main__':
         if CREDS and CREDS.expired and CREDS.refresh_token:
             CREDS.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
             CREDS = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:

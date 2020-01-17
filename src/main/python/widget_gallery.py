@@ -8,11 +8,12 @@ from PyQt5.QtWidgets import QApplication, QPushButton, QMessageBox,\
                             QCheckBox
 from PyQt5.QtCore import QDate
 from PyQt5.QtGui import QIcon
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 
 class WidgetGallery(QDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, submit_icon=None):
         super(WidgetGallery, self).__init__(parent)
 
         mainLayout = QVBoxLayout()
@@ -38,10 +39,11 @@ class WidgetGallery(QDialog):
 
     def submitButtonClicked(self):
         spreadsheet_hdl = SpreadsheetHandler()
+        appctx = ApplicationContext()
+
         alert = QMessageBox()
         alert.setWindowTitle("Expense Submitted")
-        alert.setWindowIcon(QIcon(os.path.join(os.path.dirname(os.getcwd()),
-                                               "icons\\submit.ico")))
+        alert.setWindowIcon(QIcon(appctx.get_resource("submit.ico")))
         data = [
             ["=MONTH(\""+self.dateEdit.date().toString("MM/dd/yyyy")+"\")",
              self.dateEdit.date().toString("MM/dd/yyyy"),
