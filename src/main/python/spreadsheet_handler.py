@@ -77,7 +77,7 @@ class SpreadsheetHandler(metaclass=Singleton):
                 self.format_spreadsheet()
             # TODO: remove this try except block
             except:
-                drv_hdl.service.files().delete(fileId=self.spreadsheet_id).execute()
+                self.delete_spreadsheet()
 
         finally:
             return self.spreadsheet_id
@@ -119,3 +119,16 @@ class SpreadsheetHandler(metaclass=Singleton):
     def sort_by_date(self):
         appctx = ApplicationContext()
         self.update_spreadsheet(appctx.get_resource("sort_by_date.json"))
+
+    def delete_spreadsheet(self):
+        drv_hdl = DriveHandler(self.credentials)
+        drv_hdl.service.files().delete(fileId=self.spreadsheet_id).execute()
+
+    def rename_spreadsheet(self, new_name):
+        drv_hdl = DriveHandler(self.credentials)
+
+        file = {'name': new_name}
+   
+        drv_hdl.service.files().update(fileId=self.spreadsheet_id,
+                                      body=file,
+                                      fields='name').execute()
