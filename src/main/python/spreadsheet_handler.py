@@ -102,7 +102,6 @@ class SpreadsheetHandler(metaclass=Singleton):
         print('{0} cells appended.'.format(result
                                            .get('updates')
                                            .get('updatedCells')))
-        self.expenses_sort_by_date()
 
     def update_spreadsheet(self, json_file):
         with open(json_file, encoding='utf-8') as json_file:
@@ -119,6 +118,10 @@ class SpreadsheetHandler(metaclass=Singleton):
     def expenses_sort_by_date(self):
         appctx = ApplicationContext()
         self.update_spreadsheet(appctx.get_resource("expenses_sort_by_date.json"))
+
+    def income_sort_by_date(self):
+        appctx = ApplicationContext()
+        self.update_spreadsheet(appctx.get_resource("income_sort_by_date.json"))
 
     def delete_spreadsheet(self):
         drv_hdl = DriveHandler(self.credentials)
