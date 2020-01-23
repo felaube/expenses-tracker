@@ -773,7 +773,7 @@
                     "startRowIndex": 3,
                     "endRowIndex": 15,
                     "startColumnIndex": 11,
-                    "endColumnIndex": 17
+                    "endColumnIndex": 12
                 },
                 "pasteType": "PASTE_FORMULA"
             }
