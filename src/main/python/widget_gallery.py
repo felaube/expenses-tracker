@@ -18,6 +18,8 @@ class WidgetGallery(QDialog):
     def __init__(self, parent=None, submit_icon=None):
         super(WidgetGallery, self).__init__(parent)
 
+        appctx = ApplicationContext()
+
         spreadsheet_hdl = SpreadsheetHandler()
         categories = spreadsheet_hdl.read_categories()
 
@@ -27,19 +29,26 @@ class WidgetGallery(QDialog):
         expensesWidget = QWidget()
         expensesWidget.setLayout(self.expensesLayout)
 
-        tabsWidget.addTab(expensesWidget, "Expenses")
+        tabsWidget.addTab(expensesWidget,
+                          QIcon(appctx.get_resource("submit.ico")),
+                          "Expenses")
+        tabsWidget.setTabIcon
 
         self.createIncomesLayout()
         incomeWidget = QWidget()
         incomeWidget.setLayout(self.incomesLayout)
 
-        tabsWidget.addTab(incomeWidget, "Income")
+        tabsWidget.addTab(incomeWidget,
+                          QIcon(appctx.get_resource("submit.ico")),
+                          "Income")
 
         self.createSpreadsheetActionsLayout()
         spreadsheetActions = QWidget()
         spreadsheetActions.setLayout(self.spreadsheetActionsLayout)
 
-        tabsWidget.addTab(spreadsheetActions, "Spreadsheet Actions")
+        tabsWidget.addTab(spreadsheetActions,
+                          QIcon(appctx.get_resource("sheets.ico")),
+                          "Spreadsheet Actions")
 
         self.addCategories(categories)
 
