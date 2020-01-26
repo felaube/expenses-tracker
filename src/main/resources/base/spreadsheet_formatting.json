@@ -570,7 +570,7 @@
                         "values": [
                             {
                                 "userEnteredValue": {
-                                    "stringValue": "Gastos"
+                                    "stringValue": "Expenses"
                                 }
                             }
                         ]
@@ -633,7 +633,7 @@
                             },
                             {
                                 "userEnteredValue": {
-                                    "formulaValue": "=SUMIFS(Expenses!$D:$D, Expenses!$B:$B, Resources!$A1, Expenses!$H:$H, K$3)"
+                                    "formulaValue": "=SUMIFS(Expenses!$D:$D, Expenses!$B:$B, Resources!$A1, Expenses!$H:$H, F$3)"
                                 }
                             },
                             {
@@ -678,51 +678,13 @@
                     "startRowIndex": 3,
                     "endRowIndex": 4,
                     "startColumnIndex": 4,
-                    "endColumnIndex": 5
-                },
-                "destination": {
-                    "sheetId": 3,
-                    "startRowIndex": 3,
-                    "endRowIndex": 15,
-                    "startColumnIndex": 4,
-                    "endColumnIndex": 5
-                },
-                "pasteType": "PASTE_FORMULA"
-            }
-        },
-        {
-            "copyPaste": {
-                "source": {
-                    "sheetId": 3,
-                    "startRowIndex": 3,
-                    "endRowIndex": 4,
-                    "startColumnIndex": 5,
-                    "endColumnIndex": 6
-                },
-                "destination": {
-                    "sheetId": 3,
-                    "startRowIndex": 3,
-                    "endRowIndex": 15,
-                    "startColumnIndex": 5,
-                    "endColumnIndex": 6
-                },
-                "pasteType": "PASTE_FORMULA"
-            }
-        },
-        {
-            "copyPaste": {
-                "source": {
-                    "sheetId": 3,
-                    "startRowIndex": 3,
-                    "endRowIndex": 4,
-                    "startColumnIndex": 6,
                     "endColumnIndex": 7
                 },
                 "destination": {
                     "sheetId": 3,
                     "startRowIndex": 3,
                     "endRowIndex": 15,
-                    "startColumnIndex": 6,
+                    "startColumnIndex": 4,
                     "endColumnIndex": 7
                 },
                 "pasteType": "PASTE_FORMULA"
