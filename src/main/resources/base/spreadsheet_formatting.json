@@ -871,6 +871,298 @@
                 },
                 "mergeType": "MERGE_ALL"
                 }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 3,
+                    "startRowIndex": 1,
+                    "endRowIndex": 2,
+                    "startColumnIndex": 8,
+                    "endColumnIndex": 9
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.24,
+                            "green": 0.52,
+                            "blue": 0.78
+                        },
+                        "textFormat": {
+                            "bold": true
+                        },
+                        "horizontalAlignment": "CENTER"
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor, userEnteredFormat.textFormat, userEnteredFormat.horizontalAlignment"
+            }
+        },
+        {
+            "updateCells": {
+                "rows": [
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Income"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "formulaValue": "=SUMIF(Income!$B:$B, Resources!$A1, Income!$D:$D)"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "fields": "userEnteredValue.stringValue, userEnteredValue.formulaValue",
+                "start": {
+                    "sheetId": 3,
+                    "rowIndex": 1,
+                    "columnIndex": 8
+                }
+            }
+        },
+        {
+            "copyPaste": {
+                "source": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 4,
+                    "startColumnIndex": 8,
+                    "endColumnIndex": 9
+                },
+                "destination": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 8,
+                    "endColumnIndex": 9
+                },
+                "pasteType": "PASTE_FORMULA"
+            }
+        },
+        {
+            "updateBorders": {
+                "range":{
+                    "sheetId": 3,
+                    "startRowIndex": 1,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 8,
+                    "endColumnIndex": 9
+                },
+                "top": {
+                    "style": "SOLID"
+                },
+                "bottom": {
+                    "style": "SOLID"
+                },
+                "left": {
+                    "style": "SOLID"
+                },
+                "right": {
+                    "style": "SOLID"
+                },
+                "innerHorizontal": {
+                    "style": "SOLID"
+                },
+                "innerVertical": {
+                    "style": "SOLID"
+                }
+            }
+        },
+        {
+            "addConditionalFormatRule": {
+                "rule": {
+                    "ranges": {
+                        "sheetId": 3,
+                        "startRowIndex": 2,
+                        "endRowIndex": 15,
+                        "startColumnIndex": 8,
+                        "endColumnIndex": 9
+                    },
+                    "booleanRule": {
+                        "condition": {
+                            "type": "CUSTOM_FORMULA",
+                            "values": [{
+                                "userEnteredValue":
+                                    "=MOD(ROW(),2)=0"
+                            }]
+                        },
+                        "format": {
+                            "backgroundColor": {
+                                "red": 0.62,
+                                "green": 0.77,
+                                "blue": 0.91
+                            }
+                        }
+                    }
+                },
+                "index": 0
+            }
+        },
+
+
+
+
+
+
+
+
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 3,
+                    "startRowIndex": 1,
+                    "endRowIndex": 2,
+                    "startColumnIndex": 10,
+                    "endColumnIndex": 11
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.24,
+                            "green": 0.52,
+                            "blue": 0.78
+                        },
+                        "textFormat": {
+                            "bold": true
+                        },
+                        "horizontalAlignment": "CENTER"
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor, userEnteredFormat.textFormat, userEnteredFormat.horizontalAlignment"
+            }
+        },
+        {
+            "updateCells": {
+                "rows": [
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": "Balance"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "stringValue": ""
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "values": [
+                            {
+                                "userEnteredValue": {
+                                    "formulaValue": "=$I4-$G4"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "fields": "userEnteredValue.stringValue, userEnteredValue.formulaValue",
+                "start": {
+                    "sheetId": 3,
+                    "rowIndex": 1,
+                    "columnIndex": 10
+                }
+            }
+        },
+        {
+            "copyPaste": {
+                "source": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 4,
+                    "startColumnIndex": 10,
+                    "endColumnIndex": 11
+                },
+                "destination": {
+                    "sheetId": 3,
+                    "startRowIndex": 3,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 10,
+                    "endColumnIndex": 11
+                },
+                "pasteType": "PASTE_FORMULA"
+            }
+        },
+        {
+            "updateBorders": {
+                "range":{
+                    "sheetId": 3,
+                    "startRowIndex": 1,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 10,
+                    "endColumnIndex": 11
+                },
+                "top": {
+                    "style": "SOLID"
+                },
+                "bottom": {
+                    "style": "SOLID"
+                },
+                "left": {
+                    "style": "SOLID"
+                },
+                "right": {
+                    "style": "SOLID"
+                },
+                "innerHorizontal": {
+                    "style": "SOLID"
+                },
+                "innerVertical": {
+                    "style": "SOLID"
+                }
+            }
+        },
+        {
+            "addConditionalFormatRule": {
+                "rule": {
+                    "ranges": {
+                        "sheetId": 3,
+                        "startRowIndex": 2,
+                        "endRowIndex": 15,
+                        "startColumnIndex": 10,
+                        "endColumnIndex": 11
+                    },
+                    "booleanRule": {
+                        "condition": {
+                            "type": "CUSTOM_FORMULA",
+                            "values": [{
+                                "userEnteredValue":
+                                    "=MOD(ROW(),2)=0"
+                            }]
+                        },
+                        "format": {
+                            "backgroundColor": {
+                                "red": 0.62,
+                                "green": 0.77,
+                                "blue": 0.91
+                            }
+                        }
+                    }
+                },
+                "index": 0
+            }
         }
     ]
 }
