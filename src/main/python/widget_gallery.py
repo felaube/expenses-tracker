@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QPushButton, QMessageBox,\
                             QHBoxLayout, QDateEdit, QDialog,\
                             QStyleFactory, QComboBox, QLineEdit,\
                             QCheckBox, QTabWidget, QGridLayout,\
-                            QLabel
+                            QLabel, QGroupBox, QBoxLayout
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QIcon
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
@@ -17,6 +17,9 @@ class WidgetGallery(QDialog):
 
     def __init__(self, parent=None, submit_icon=None):
         super(WidgetGallery, self).__init__(parent)
+
+        spreadsheet_hdl = SpreadsheetHandler()
+        categories = spreadsheet_hdl.read_categories()
 
         tabsWidget = QTabWidget()
 
@@ -38,6 +41,8 @@ class WidgetGallery(QDialog):
 
         tabsWidget.addTab(spreadsheetActions, "Spreadsheet Actions")
 
+        self.addCategories(categories)
+
         self.layout = QVBoxLayout()
         self.layout.addWidget(tabsWidget)
         self.setLayout(self.layout)
@@ -51,21 +56,16 @@ class WidgetGallery(QDialog):
         expenseDoubleSpinBox_label = QLabel("Value")
         expenseDoubleSpinBox_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
         self.expenseDoubleSpinBox = QDoubleSpinBox(maximum=1000, decimals=2,
-                                            minimum=0)
+                                                   minimum=0)
 
         expenseDateEdit_label = QLabel("Date")
         expenseDateEdit_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
         self.expenseDateEdit = QDateEdit(calendarPopup=True, displayFormat="dd/MM/yy",
                                          date=QDate.currentDate())
 
-        # TODO: Find out how to get insertPolicy working
         expenseCategoriesComboBox_label = QLabel("Category")
         expenseCategoriesComboBox_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.expenseCategoriesComboBox = QComboBox(insertPolicy=QComboBox.InsertAlphabetically)
-
-        # TODO: Remove hardcoded categories. Read categories from file
-        self.addCategories(["Bandejão", "Supermercado", "Contas", "Lanche",
-                            "Almoço", "Ônibus", "Outros"])
+        self.expenseCategoriesComboBox = QComboBox()
 
         expenseSpecificationLine_label = QLabel("Specification")
         expenseSpecificationLine_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
@@ -106,9 +106,43 @@ class WidgetGallery(QDialog):
         create_and_delete_button = QPushButton("Create New Spreadsheet Deleting the Old One")
         create_and_delete_button.clicked.connect(self.createAndDeleteButtonClicked)
 
+        self.addCategoryLine = QLineEdit()
+
+        add_category_button = QPushButton("Add New Category")
+        add_category_button.clicked.connect(self.addCategoryButtonClicked)
+
+        self.delCategoryComboBox = QComboBox()
+
+        del_category_button = QPushButton("Delete Category")
+        del_category_button.clicked.connect(self.delCategoryButtonClicked)
+
+        categories_group = QGroupBox(title="Expenses Categories")
+        categories_layout = QHBoxLayout()
+
+        add_categories_layout = QVBoxLayout()
+        del_categories_layout = QVBoxLayout()
+
+        add_categories_layout.addWidget(self.addCategoryLine)
+        add_categories_layout.addWidget(add_category_button)
+
+        del_categories_layout.addWidget(self.delCategoryComboBox)
+        del_categories_layout.addWidget(del_category_button)
+
+        add_categories_widget = QWidget()
+        del_categories_widget = QWidget()
+
+        add_categories_widget.setLayout(add_categories_layout)
+        del_categories_widget.setLayout(del_categories_layout)
+
+        categories_layout.addWidget(add_categories_widget)
+        categories_layout.addWidget(del_categories_widget)
+
+        categories_group.setLayout(categories_layout)
+
         self.spreadsheetActionsLayout.addWidget(access_spreadsheet_button)
         self.spreadsheetActionsLayout.addWidget(create_and_maintain_button)
         self.spreadsheetActionsLayout.addWidget(create_and_delete_button)
+        self.spreadsheetActionsLayout.addWidget(categories_group)
 
     def createIncomesLayout(self):
         self.incomesLayout = QGridLayout()
@@ -147,14 +181,22 @@ class WidgetGallery(QDialog):
 
     def addCategories(self, new_items):
         self.expenseCategoriesComboBox.insertItems(0, new_items)
+        self.delCategoryComboBox.insertItems(0, new_items)
+
+    def resetCategoriesComboBox(self):
+        spreadsheet_hdl = SpreadsheetHandler()
+
+        categories = spreadsheet_hdl.read_categories()
+
+        self.expenseCategoriesComboBox.clear()
+        self.delCategoryComboBox.clear()
+
+        self.addCategories(categories)
 
     def submitExpenseButtonClicked(self):
         spreadsheet_hdl = SpreadsheetHandler()
         appctx = ApplicationContext()
 
-        alert = QMessageBox()
-        alert.setWindowTitle("Expense Submitted")
-        alert.setWindowIcon(QIcon(appctx.get_resource("submit.ico")))
         data = [
             ["=MONTH(\""+self.expenseDateEdit.date().toString("MM/dd/yyyy")+"\")",
              self.expenseDateEdit.date().toString("MM/dd/yyyy"),
@@ -170,6 +212,10 @@ class WidgetGallery(QDialog):
 
         spreadsheet_hdl.append_data(data, range="Expenses")
         spreadsheet_hdl.expenses_sort_by_date()
+
+        alert = QMessageBox()
+        alert.setWindowTitle("Expense Submitted")
+        alert.setWindowIcon(QIcon(appctx.get_resource("submit.ico")))
         alert.setText("The expense was submitted!")
         alert.exec_()
 
@@ -177,9 +223,6 @@ class WidgetGallery(QDialog):
         spreadsheet_hdl = SpreadsheetHandler()
         appctx = ApplicationContext()
 
-        alert = QMessageBox()
-        alert.setWindowTitle("Income Submitted")
-        alert.setWindowIcon(QIcon(appctx.get_resource("submit.ico")))
         data = [
             ["=MONTH(\""+self.incomesDateEdit.date().toString("MM/dd/yyyy")+"\")",
              self.incomesDateEdit.date().toString("MM/dd/yyyy"),
@@ -191,6 +234,10 @@ class WidgetGallery(QDialog):
 
         spreadsheet_hdl.append_data(data, range="Income")
         spreadsheet_hdl.income_sort_by_date()
+
+        alert = QMessageBox()
+        alert.setWindowTitle("Income Submitted")
+        alert.setWindowIcon(QIcon(appctx.get_resource("submit.ico")))
         alert.setText("The income was submitted!")
         alert.exec_()
 
@@ -200,31 +247,87 @@ class WidgetGallery(QDialog):
                         spreadsheet_hdl.spreadsheet_id)
 
     def createAndMaintainButtonClicked(self):
+        appctx = ApplicationContext()
+
         spreadsheet_hdl = SpreadsheetHandler()
         spreadsheet_hdl.rename_spreadsheet(spreadsheet_hdl.file_name + '_OLD')
         spreadsheet_hdl.create_spreadsheet()
-        
+
+        self.resetCategoriesComboBox()
+
         alert = QMessageBox()
         alert.setWindowTitle("Spreadsheet Reset")
+        alert.setWindowIcon(QIcon(appctx.get_resource("sheets.ico")))
         alert.setText("A new spreadsheet was created! To access the old "
                       "spreadsheet, look for Expenses Tracker_OLD in your Drive.")
         alert.exec_()
 
     def createAndDeleteButtonClicked(self):
-        alert = QMessageBox.question(self, "Spreadsheet Reset",
-                                     "All information present "
-                                     "on the current spreadsheet "
-                                     "will be lost. "
-                                     "Are you sure you wish to continue?",
-                                     QMessageBox.Yes | QMessageBox.No,
-                                     QMessageBox.No)
+        appctx = ApplicationContext()
 
-        if alert == QMessageBox.Yes:
+        alert = QMessageBox()
+        alert.setIcon(QMessageBox.Question)
+        alert.setText("All information present "
+                      "on the current spreadsheet "
+                      "will be lost. "
+                      "Are you sure you wish to continue?")
+        alert.setWindowTitle("Spreadsheet Reset Confirmation")
+        alert.setWindowIcon(QIcon(appctx.get_resource("sheets.ico")))
+        alert.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        alert.setDefaultButton(QMessageBox.No)
+        reply = alert.exec_()
+
+        if reply == alert.Yes:
             spreadsheet_hdl = SpreadsheetHandler()
             spreadsheet_hdl.delete_spreadsheet()
             spreadsheet_hdl.create_spreadsheet()
 
+            self.resetCategoriesComboBox()
+
             alert = QMessageBox()
             alert.setWindowTitle("Spreadsheet Reset")
+            alert.setWindowIcon(QIcon(appctx.get_resource("sheets.ico")))
             alert.setText("A new spreadsheet was created!")
             alert.exec_()
+
+    def addCategoryButtonClicked(self):
+        spreadsheet_hdl = SpreadsheetHandler()
+        appctx = ApplicationContext()
+
+        new_category = self.addCategoryLine.text()
+
+        categories = spreadsheet_hdl.read_categories()
+
+        if new_category in categories:
+            alert = QMessageBox()
+            alert.setWindowTitle("Category Adding")
+            alert.setWindowIcon(QIcon(appctx.get_resource("sheets.ico")))
+            alert.setText("The category " + new_category + " already exists.")
+            alert.exec_()
+            return
+
+        spreadsheet_hdl.add_category(new_category)
+
+        self.resetCategoriesComboBox()
+
+        alert = QMessageBox()
+        alert.setWindowTitle("Category Adding")
+        alert.setWindowIcon(QIcon(appctx.get_resource("sheets.ico")))
+        alert.setText("The category " + new_category + " was succesfully added!")
+        alert.exec_()
+
+    def delCategoryButtonClicked(self):
+        spreadsheet_hdl = SpreadsheetHandler()
+        appctx = ApplicationContext()
+
+        category_to_be_del = self.delCategoryComboBox.currentText()
+
+        spreadsheet_hdl.delete_category(category_to_be_del)
+
+        self.resetCategoriesComboBox()
+
+        alert = QMessageBox()
+        alert.setWindowTitle("Category Deleting")
+        alert.setWindowIcon(QIcon(appctx.get_resource("sheets.ico")))
+        alert.setText("The category " + category_to_be_del + " was succesfully deleted!")
+        alert.exec_()

@@ -73,11 +73,8 @@ class SpreadsheetHandler(metaclass=Singleton):
                                                              fields="spreadsheetId").execute()
 
             self.spreadsheet_id = spreadsheet.get('spreadsheetId')
-            try:
-                self.format_spreadsheet()
-            # TODO: remove this try except block
-            except:
-                self.delete_spreadsheet()
+
+            self.format_spreadsheet()
 
         finally:
             return self.spreadsheet_id
@@ -104,8 +101,14 @@ class SpreadsheetHandler(metaclass=Singleton):
                                            .get('updatedCells')))
 
     def update_spreadsheet(self, json_file):
-        with open(json_file, encoding='utf-8') as json_file:
-            body = json.load(json_file)
+        # Check if json_file is the name of the file
+        if isinstance(json_file, str):
+            with open(json_file, encoding='utf-8') as json_file:
+                body = json.load(json_file)
+
+        # Check if json_file is the json already parsed as a dict
+        elif isinstance(json_file, dict):
+            body = json_file
 
         self.service.spreadsheets().batchUpdate(
                     spreadsheetId=self.spreadsheet_id,
@@ -133,5 +136,112 @@ class SpreadsheetHandler(metaclass=Singleton):
         file = {'name': new_name}
 
         drv_hdl.service.files().update(fileId=self.spreadsheet_id,
-                                      body=file,
-                                      fields='name').execute()
+                                       body=file,
+                                       fields='name').execute()
+
+    def add_category(self, new_category):
+
+        body = {
+            "requests": [
+                {
+                    "insertDimension": {
+                        "range": {
+                            "sheetId": 3,
+                            "dimension": "COLUMNS",
+                            "startIndex": 3,
+                            "endIndex": 4
+                        },
+                        "inheritFromBefore": False
+                    }
+                },
+                {
+                    "updateCells": {
+                        "rows": [
+                            {
+                                "values": [
+                                    {
+                                        "userEnteredValue": {
+                                            "stringValue": new_category
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "fields": "userEnteredValue.stringValue",
+                        "start": {
+                            "sheetId": 3,
+                            "rowIndex": 2,
+                            "columnIndex": 3
+                        }
+                    }
+                },
+                {
+                    "copyPaste": {
+                        "source": {
+                            "sheetId": 3,
+                            "startRowIndex": 3,
+                            "endRowIndex": 4,
+                            "startColumnIndex": 2,
+                            "endColumnIndex": 3
+                        },
+                        "destination": {
+                            "sheetId": 3,
+                            "startRowIndex": 3,
+                            "endRowIndex": 15,
+                            "startColumnIndex": 3,
+                            "endColumnIndex": 4
+                        },
+                        "pasteType": "PASTE_FORMULA"
+                    }
+                }
+            ]
+        }
+
+        self.update_spreadsheet(body)
+
+    def delete_category(self, category):
+        # Find column index of "category"
+        current_column_ascII = 67
+
+        while True:
+            current_category = self.service.spreadsheets().values().get(spreadsheetId=self.spreadsheet_id,
+                                                                        range="Summary!" + chr(current_column_ascII) + "3").execute()
+
+            if current_category['values'][0][0] == category:
+                index = current_column_ascII - 65
+                break
+            else:
+                current_column_ascII += 1
+
+        body = {
+            "requests": [
+                {
+                    "deleteDimension": {
+                        "range": {
+                            "sheetId": 3,
+                            "dimension": "COLUMNS",
+                            "startIndex": index,
+                            "endIndex": index + 1
+                        }
+                    }
+                }
+            ]
+        }
+
+        self.update_spreadsheet(body)
+
+    def read_categories(self):
+        categories = list()
+        current_column_ascII = 67
+
+        while True:
+            category = self.service.spreadsheets().values().get(spreadsheetId=self.spreadsheet_id,
+                                                                range="Summary!" + chr(current_column_ascII) + "3").execute()
+
+            if category['values'][0][0] == "Total":
+                break
+            else:
+                categories.append(category['values'][0][0])
+                current_column_ascII += 1
+
+        return sorted(categories)
