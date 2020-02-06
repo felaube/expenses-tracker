@@ -11,6 +11,7 @@ from widget_gallery import WidgetGallery
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
           'https://www.googleapis.com/auth/drive.metadata.readonly',
@@ -26,9 +27,13 @@ if __name__ == '__main__':
                         "https://developers.google.com/sheets/api/quickstart/python" + \
                         ", go to Step 1, dowload the configuration" + \
                         " file 'credentials.json' " + \
-                        ", save it on the application folder " + \
-                        "and then run the application again."
+                        "and save it on the application folder. " + \
+                        "\nThen, access " + \
+                        "https://developers.google.com/drive/api/v3/enable-drive-api " + \
+                        "to enable the Drive API on your google account. " + \
+                        "After following the steps above, run the application again."
         print(error_message)
+        webbrowser.open("https://developers.google.com/drive/api/v3/enable-drive-api")
         app = QApplication([])
         error_window = QMessageBox()
         error_window.setWindowTitle("Expenses Tracker")
@@ -37,6 +42,7 @@ if __name__ == '__main__':
         error_window.setText(error_message)
         error_window.setStandardButtons(QMessageBox.Ok)
         error_window.setDefaultButton(QMessageBox.Ok)
+        error_window.setTextInteractionFlags(Qt.TextSelectableByMouse)
         sys.exit(error_window.exec_())
 
     CREDS = None
