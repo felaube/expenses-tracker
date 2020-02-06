@@ -7,8 +7,9 @@ from PyQt5.QtWidgets import QApplication, QPushButton, QMessageBox,\
                             QHBoxLayout, QDateEdit, QDialog,\
                             QStyleFactory, QComboBox, QLineEdit,\
                             QCheckBox, QTabWidget, QGridLayout,\
-                            QLabel, QGroupBox, QBoxLayout
-from PyQt5.QtCore import QDate, Qt
+                            QLabel, QGroupBox, QBoxLayout,\
+                            QDesktopWidget, QSizePolicy
+from PyQt5.QtCore import QDate, Qt, QRect
 from PyQt5.QtGui import QIcon
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
@@ -23,131 +24,146 @@ class WidgetGallery(QDialog):
         spreadsheet_hdl = SpreadsheetHandler()
         categories = spreadsheet_hdl.read_categories()
 
-        tabsWidget = QTabWidget()
+        self.tabsWidget = QTabWidget()
 
         self.createExpensesLayout()
-        expensesWidget = QWidget()
-        expensesWidget.setLayout(self.expensesLayout)
 
-        tabsWidget.addTab(expensesWidget,
-                          QIcon(appctx.get_resource("submit.ico")),
-                          "Expenses")
+        self.tabsWidget.addTab(self.expensesWidget,
+                               QIcon(appctx.get_resource("submit.ico")),
+                               "Expenses")
 
         self.createIncomesLayout()
-        incomeWidget = QWidget()
-        incomeWidget.setLayout(self.incomesLayout)
 
-        tabsWidget.addTab(incomeWidget,
-                          QIcon(appctx.get_resource("submit.ico")),
-                          "Income")
+        self.tabsWidget.addTab(self.incomesWidget,
+                               QIcon(appctx.get_resource("submit.ico")),
+                               "Income")
 
         self.createSpreadsheetActionsLayout()
-        spreadsheetActions = QWidget()
-        spreadsheetActions.setLayout(self.spreadsheetActionsLayout)
 
-        tabsWidget.addTab(spreadsheetActions,
-                          QIcon(appctx.get_resource("sheets.ico")),
-                          "Spreadsheet Actions")
+        self.tabsWidget.addTab(self.spreadsheetActionsWidget,
+                               QIcon(appctx.get_resource("sheets.ico")),
+                               "Spreadsheet Actions")
 
         self.addCategories(categories)
 
+        self.resize(570, 320)
+
+        self.tabsWidget.currentChanged.connect(self.adjustTabWidgetSize)
+
         self.layout = QVBoxLayout()
-        self.layout.addWidget(tabsWidget)
+        self.layout.addWidget(self.tabsWidget)
         self.setLayout(self.layout)
         self.setWindowTitle("Expenses Tracker")
 
         QApplication.setStyle(QStyleFactory.create("Fusion"))
 
     def createExpensesLayout(self):
-        self.expensesLayout = QGridLayout()
+        self.expensesWidget = QWidget()
+        self.expensesWidget.setGeometry(QRect(10, 10, 550, 300))
 
-        expenseDoubleSpinBox_label = QLabel("Value")
-        expenseDoubleSpinBox_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.expenseDoubleSpinBox = QDoubleSpinBox(maximum=1000, decimals=2,
-                                                   minimum=0)
+        expenseDoubleSpinBox_label = QLabel("Value", self.expensesWidget)
+        expenseDoubleSpinBox_label.setGeometry(QRect(30, 80, 40, 20))
+        expenseDoubleSpinBox_label.setAlignment(Qt.AlignCenter)
+        self.expenseDoubleSpinBox = QDoubleSpinBox(self.expensesWidget)
+        self.expenseDoubleSpinBox.setMaximum(1000)
+        self.expenseDoubleSpinBox.setDecimals(2)
+        self.expenseDoubleSpinBox.setMinimum(0)
+        self.expenseDoubleSpinBox.setGeometry(QRect(10, 100, 80, 20))
 
-        expenseDateEdit_label = QLabel("Date")
+        expenseDateEdit_label = QLabel("Date", self.expensesWidget)
+        expenseDateEdit_label.setGeometry(QRect(120, 80, 40, 20))
         expenseDateEdit_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.expenseDateEdit = QDateEdit(calendarPopup=True, displayFormat="dd/MM/yy",
-                                         date=QDate.currentDate())
+        self.expenseDateEdit = QDateEdit(self.expensesWidget)
+        self.expenseDateEdit.setCalendarPopup(True)
+        self.expenseDateEdit.setDisplayFormat("dd/MM/yy")
+        self.expenseDateEdit.setDate(QDate.currentDate())
+        self.expenseDateEdit.setGeometry(QRect(100, 100, 80, 20))
 
-        expenseCategoriesComboBox_label = QLabel("Category")
+        expenseCategoriesComboBox_label = QLabel("Category", self.expensesWidget)
+        expenseCategoriesComboBox_label.setGeometry(QRect(210, 80, 60, 20))
         expenseCategoriesComboBox_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.expenseCategoriesComboBox = QComboBox()
+        self.expenseCategoriesComboBox = QComboBox(self.expensesWidget)
+        self.expenseCategoriesComboBox.setGeometry(QRect(190, 100, 100, 20))
 
-        expenseSpecificationLine_label = QLabel("Specification")
+        expenseSpecificationLine_label = QLabel("Specification", self.expensesWidget)
+        expenseSpecificationLine_label.setGeometry(QRect(320, 80, 70, 20))
         expenseSpecificationLine_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.expenseSpecificationLine = QLineEdit()
+        self.expenseSpecificationLine = QLineEdit(self.expensesWidget)
+        self.expenseSpecificationLine.setGeometry(QRect(300, 100, 115, 20))
 
-        expenseObservationLine_label = QLabel("Observation")
+        expenseObservationLine_label = QLabel("Observation", self.expensesWidget)
+        expenseObservationLine_label.setGeometry(QRect(440, 80, 80, 20))
         expenseObservationLine_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.expenseObservationLine = QLineEdit()
+        self.expenseObservationLine = QLineEdit(self.expensesWidget)
+        self.expenseObservationLine.setGeometry(QRect(420, 100, 115, 20))
 
-        submitbutton = QPushButton("Submit Expense")
+        self.vrCheckBox = QCheckBox("Gasto com VR", self.expensesWidget)
+        self.vrCheckBox.setGeometry(QRect(10, 140, 110, 20))
+
+        submitbutton = QPushButton("Submit Expense", self.expensesWidget)
         submitbutton.clicked.connect(self.submitExpenseButtonClicked)
-
-        self.vrCheckBox = QCheckBox("Gasto com VR")
-
-        self.expensesLayout.addWidget(expenseDoubleSpinBox_label, 0, 0)
-        self.expensesLayout.addWidget(expenseDateEdit_label, 0, 1)
-        self.expensesLayout.addWidget(expenseCategoriesComboBox_label, 0, 2)
-        self.expensesLayout.addWidget(expenseSpecificationLine_label, 0, 3)
-        self.expensesLayout.addWidget(expenseObservationLine_label, 0, 4)
-
-        self.expensesLayout.addWidget(self.expenseDoubleSpinBox, 1, 0, Qt.AlignCenter)
-        self.expensesLayout.addWidget(self.expenseDateEdit, 1, 1, Qt.AlignCenter)
-        self.expensesLayout.addWidget(self.expenseCategoriesComboBox, 1, 2, Qt.AlignCenter)
-        self.expensesLayout.addWidget(self.expenseSpecificationLine, 1, 3, Qt.AlignCenter)
-        self.expensesLayout.addWidget(self.expenseObservationLine, 1, 4, Qt.AlignCenter)
-        self.expensesLayout.addWidget(self.vrCheckBox, 2, 0, Qt.AlignCenter)
-        self.expensesLayout.addWidget(submitbutton, 3, 0, -1, -1, Qt.AlignCenter)
+        submitbutton.setGeometry(QRect(10, 170, 520, 25))
 
     def createIncomesLayout(self):
-        self.incomesLayout = QGridLayout()
+        self.incomesWidget = QWidget()
+        self.incomesWidget.setGeometry(QRect(10, 10, 460, 300))
 
-        incomesDoubleSpinBox_label = QLabel("Value")
+        incomesDoubleSpinBox_label = QLabel("Value", self.incomesWidget)
         incomesDoubleSpinBox_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.incomesDoubleSpinBox = QDoubleSpinBox(maximum=1000, decimals=2,
-                                                   minimum=0)
+        incomesDoubleSpinBox_label.setGeometry(QRect(40, 80, 40, 20))
+        self.incomesDoubleSpinBox = QDoubleSpinBox(self.incomesWidget)
+        self.incomesDoubleSpinBox.setMaximum(1000)                                         
+        self.incomesDoubleSpinBox.setDecimals(2)
+        self.incomesDoubleSpinBox.setMinimum(0)
+        self.incomesDoubleSpinBox.setGeometry(QRect(20, 100, 80, 20))
 
-        incomesDateEdit_label = QLabel("Date")
+        incomesDateEdit_label = QLabel("Date", self.incomesWidget)
         incomesDateEdit_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.incomesDateEdit = QDateEdit(calendarPopup=True, displayFormat="dd/MM/yy",
-                                         date=QDate.currentDate())
+        incomesDateEdit_label.setGeometry(QRect(130, 80, 40, 20))
+        self.incomesDateEdit = QDateEdit(self.incomesWidget)
+        self.incomesDateEdit.setCalendarPopup(True)
+        self.incomesDateEdit.setDisplayFormat("dd/MM/yy")
+        self.incomesDateEdit.setDate(QDate.currentDate())
+        self.incomesDateEdit.setGeometry(QRect(110, 100, 80, 20))                        
 
-        incomesSpecificationLine_label = QLabel("Specification")
+        incomesSpecificationLine_label = QLabel("Specification", self.incomesWidget)
         incomesSpecificationLine_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.incomesSpecificationLine = QLineEdit()
+        incomesSpecificationLine_label.setGeometry(QRect(220, 80, 70, 20))
+        self.incomesSpecificationLine = QLineEdit(self.incomesWidget)
+        self.incomesSpecificationLine.setGeometry(QRect(200, 100, 115, 20))
 
-        incomesObservationLine_label = QLabel("Observation")
+        incomesObservationLine_label = QLabel("Observation", self.incomesWidget)
         incomesObservationLine_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
-        self.incomesObservationLine = QLineEdit()
+        incomesObservationLine_label.setGeometry(QRect(340, 80, 80, 20))
+        self.incomesObservationLine = QLineEdit(self.incomesWidget)
+        self.incomesObservationLine.setGeometry(QRect(320, 100, 115, 20))
 
-        submitbutton = QPushButton("Submit Income")
+        submitbutton = QPushButton("Submit Income", self.incomesWidget)
+        submitbutton.setGeometry(QRect(10, 170, 430, 25))
         submitbutton.clicked.connect(self.submitIncomeButtonClicked)
 
-        self.incomesLayout.addWidget(incomesDoubleSpinBox_label, 0, 0)
-        self.incomesLayout.addWidget(incomesDateEdit_label, 0, 1)
-        self.incomesLayout.addWidget(incomesSpecificationLine_label, 0, 2)
-        self.incomesLayout.addWidget(incomesObservationLine_label, 0, 3)
-
-        self.incomesLayout.addWidget(self.incomesDoubleSpinBox, 1, 0, Qt.AlignCenter)
-        self.incomesLayout.addWidget(self.incomesDateEdit, 1, 1, Qt.AlignCenter)
-        self.incomesLayout.addWidget(self.incomesSpecificationLine, 1, 2, Qt.AlignCenter)
-        self.incomesLayout.addWidget(self.incomesObservationLine, 1, 3, Qt.AlignCenter)
-        self.incomesLayout.addWidget(submitbutton, 2, 0, -1, -1, Qt.AlignCenter)
-
     def createSpreadsheetActionsLayout(self):
-        self.spreadsheetActionsLayout = QVBoxLayout()
+        self.spreadsheetActionsWidget = QWidget()
+        self.spreadsheetActionsWidget.setGeometry(QRect(10, 10, 550, 300))
 
-        access_spreadsheet_button = QPushButton("Access Spreadsheet")
+        access_spreadsheet_button = QPushButton("Access Spreadsheet",
+                                                self.spreadsheetActionsWidget)
         access_spreadsheet_button.clicked.connect(self.accessSpreadsheetButtonClicked)
+        access_spreadsheet_button.setGeometry(QRect(10, 10, 525, 25))
 
-        create_and_maintain_button = QPushButton("Create New Spreadsheet Maintaining the Old One")
+        create_and_maintain_button = QPushButton("Create New Spreadsheet Maintaining the Old One",
+                                                 self.spreadsheetActionsWidget)
         create_and_maintain_button.clicked.connect(self.createAndMaintainButtonClicked)
+        create_and_maintain_button.setGeometry(QRect(10, 40, 525, 25))
 
-        create_and_delete_button = QPushButton("Create New Spreadsheet Deleting the Old One")
+        create_and_delete_button = QPushButton("Create New Spreadsheet Deleting the Old One",
+                                               self.spreadsheetActionsWidget)
         create_and_delete_button.clicked.connect(self.createAndDeleteButtonClicked)
+        create_and_delete_button.setGeometry(QRect(10, 70, 525, 25))
+
+        categories_group = QGroupBox("Expenses Categories", self.spreadsheetActionsWidget)
+        categories_group.setGeometry(QRect(10, 110, 525, 140))
+        categories_layout = QHBoxLayout()
 
         self.addCategoryLine = QLineEdit()
 
@@ -158,9 +174,6 @@ class WidgetGallery(QDialog):
 
         del_category_button = QPushButton("Delete Category")
         del_category_button.clicked.connect(self.delCategoryButtonClicked)
-
-        categories_group = QGroupBox(title="Expenses Categories")
-        categories_layout = QHBoxLayout()
 
         add_categories_layout = QVBoxLayout()
         del_categories_layout = QVBoxLayout()
@@ -181,11 +194,6 @@ class WidgetGallery(QDialog):
         categories_layout.addWidget(del_categories_widget)
 
         categories_group.setLayout(categories_layout)
-
-        self.spreadsheetActionsLayout.addWidget(access_spreadsheet_button)
-        self.spreadsheetActionsLayout.addWidget(create_and_maintain_button)
-        self.spreadsheetActionsLayout.addWidget(create_and_delete_button)
-        self.spreadsheetActionsLayout.addWidget(categories_group)
 
     def addCategories(self, new_items):
         self.expenseCategoriesComboBox.insertItems(0, new_items)
@@ -339,3 +347,11 @@ class WidgetGallery(QDialog):
         alert.setWindowIcon(QIcon(appctx.get_resource("sheets.ico")))
         alert.setText("The category " + category_to_be_del + " was succesfully deleted!")
         alert.exec_()
+
+    def adjustTabWidgetSize(self):
+        current_tab = self.tabsWidget.currentIndex()
+
+        if current_tab == 0 or current_tab == 2:
+            self.resize(570, 320)
+        else:
+            self.resize(480, 320)
