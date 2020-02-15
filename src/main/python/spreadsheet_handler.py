@@ -51,7 +51,7 @@ class SpreadsheetHandler(metaclass=Singleton):
                     {
                         "properties": {
                             "sheetId": 2,
-                            "title": "Income"
+                            "title": "Incomes"
                         }
                     },
                     {
@@ -245,3 +245,42 @@ class SpreadsheetHandler(metaclass=Singleton):
                 current_column_ascII += 1
 
         return sorted(categories)
+
+    def get_latest_upload(self, sheet_specification):
+
+        latest_uploads = list()
+
+        if sheet_specification == "expenses":
+            range = "Expenses!C4:F"
+        elif sheet_specification == "incomes":
+            range = "Incomes!C4:E"
+        else:
+            raise ValueError("get_latest_upload: 'sheet_specification'" +
+                             "must be 'expenses' or 'incomes'")
+
+        latest_uploads_request = self.service.spreadsheets().values().batchGet(spreadsheetId=self.spreadsheet_id,
+                                                                               ranges=range).execute()
+        # Check if the there is any data stored in the spreadsheet
+        if "values" in latest_uploads_request['valueRanges'][0]:
+            values = latest_uploads_request['valueRanges'][0]['values']
+        else:
+            # There is no data in the requested range, return a empty list
+            return list()
+
+        # Look for the items from the last 2 days displayed in the sheet
+        flag = 0
+        date = values[-1][0]
+        latest_uploads.insert(0, values[-1][:])
+        for row in values[-2::-1]:
+            if row[0] == date:
+                latest_uploads.insert(0, row)
+            elif flag == 0 or flag == 1:
+                # Strike 1 and Strike 2
+                latest_uploads.insert(0, row)
+                date = row[0]
+                flag += 1
+            else:
+                # Strike 3
+                break
+
+        return latest_uploads
