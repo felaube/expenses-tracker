@@ -1,5 +1,3 @@
-import os
-import sys
 import webbrowser
 from spreadsheet_handler import SpreadsheetHandler
 from PyQt5.QtWidgets import QApplication, QPushButton, QMessageBox,\
@@ -8,9 +6,10 @@ from PyQt5.QtWidgets import QApplication, QPushButton, QMessageBox,\
                             QStyleFactory, QComboBox, QLineEdit,\
                             QCheckBox, QTabWidget, QGridLayout,\
                             QLabel, QGroupBox, QBoxLayout,\
-                            QDesktopWidget, QSizePolicy
+                            QDesktopWidget, QSizePolicy, QTableWidget,\
+                            QTableWidgetItem, QAbstractItemView
 from PyQt5.QtCore import QDate, Qt, QRect
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 
@@ -26,26 +25,34 @@ class WidgetGallery(QDialog):
 
         self.tabsWidget = QTabWidget()
 
+        # Add 'Expenses' tab to main widget
         self.createExpensesLayout()
-
         self.tabsWidget.addTab(self.expensesWidget,
                                QIcon(appctx.get_resource("submit.ico")),
                                "Expenses")
 
+        # Add 'Incomes' tab to main widget
         self.createIncomesLayout()
-
         self.tabsWidget.addTab(self.incomesWidget,
                                QIcon(appctx.get_resource("submit.ico")),
-                               "Income")
+                               "Incomes")
 
+        # Add 'Latest Uploads' tab to main widget
+        self.createLatestUploads()
+        self.tabsWidget.addTab(self.latestUploadsWidget,
+                               QIcon(appctx.get_resource("sheets.ico")),
+                               "Latest Uploads")
+
+        # Add 'Spreadsheet Actions' tab to main widget
         self.createSpreadsheetActionsLayout()
-
         self.tabsWidget.addTab(self.spreadsheetActionsWidget,
                                QIcon(appctx.get_resource("sheets.ico")),
                                "Spreadsheet Actions")
 
+        # Set the current available expenses categories
         self.addCategories(categories)
 
+        # Set main window size
         self.resize(570, 320)
 
         self.tabsWidget.currentChanged.connect(self.adjustTabWidgetSize)
@@ -60,10 +67,11 @@ class WidgetGallery(QDialog):
     def createExpensesLayout(self):
         self.expensesWidget = QWidget()
         self.expensesWidget.setGeometry(QRect(10, 10, 550, 300))
+        self.expensesWidget.size = (570, 320)
 
         expenseDoubleSpinBox_label = QLabel("Value", self.expensesWidget)
         expenseDoubleSpinBox_label.setGeometry(QRect(30, 80, 40, 20))
-        expenseDoubleSpinBox_label.setAlignment(Qt.AlignCenter)
+        expenseDoubleSpinBox_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
         self.expenseDoubleSpinBox = QDoubleSpinBox(self.expensesWidget)
         self.expenseDoubleSpinBox.setMaximum(1000)
         self.expenseDoubleSpinBox.setDecimals(2)
@@ -104,15 +112,71 @@ class WidgetGallery(QDialog):
         submitbutton.clicked.connect(self.submitExpenseButtonClicked)
         submitbutton.setGeometry(QRect(10, 170, 520, 25))
 
+    def createLatestUploads(self):
+        self.latestUploadsWidget = QWidget()
+        self.latestUploadsWidget.setGeometry(QRect(10, 10, 550, 300))
+        self.latestUploadsWidget.size = (824, 403)
+
+        # Construct Latest Expenses Group
+        expenses_group = QGroupBox("Latest Expenses", self.latestUploadsWidget)
+
+        self.expensesTable = QTableWidget(expenses_group)
+        self.expensesTable.setColumnCount(4)
+        self.expensesTable.verticalHeader().setVisible(False)
+        self.expensesTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.expensesTable.setSelectionMode(QAbstractItemView.NoSelection)
+        self.expensesTable.setFixedSize(415, 265)
+        self.expensesTable.setHorizontalHeaderLabels(["Date", "Value",
+                                                      "Category", "Specification"])
+
+        self.fillExpensesTableData()
+
+        update_expenses_table_button = QPushButton("Update Expenses Table")
+        update_expenses_table_button.clicked.connect(self.updateExpensesTableButtonClicked)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.expensesTable)
+        layout.addWidget(update_expenses_table_button)
+
+        expenses_group.setLayout(layout)
+        expenses_group.move(10, 5)
+        expenses_group.setStyleSheet("QGroupBox { font-weight: bold; } ")
+
+        # Construct Latest Incomes Group
+        incomes_group = QGroupBox("Latest Incomes", self.latestUploadsWidget)
+
+        self.incomesTable = QTableWidget(incomes_group)
+        self.incomesTable.setColumnCount(3)
+        self.incomesTable.verticalHeader().setVisible(False)
+        self.incomesTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.incomesTable.setSelectionMode(QAbstractItemView.NoSelection)
+        self.incomesTable.setFixedSize(301, 265)
+        self.incomesTable.setHorizontalHeaderLabels(["Date", "Value",
+                                                     "Category"])
+
+        self.fillIncomesTableData()
+
+        update_incomes_table_button = QPushButton("Update Incomes Table")
+        update_incomes_table_button.clicked.connect(self.updateIncomesTableButtonClicked)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.incomesTable)
+        layout.addWidget(update_incomes_table_button)
+
+        incomes_group.setLayout(layout)
+        incomes_group.move(460, 5)
+        incomes_group.setStyleSheet("QGroupBox { font-weight: bold; } ")
+
     def createIncomesLayout(self):
         self.incomesWidget = QWidget()
         self.incomesWidget.setGeometry(QRect(10, 10, 460, 300))
+        self.incomesWidget.size = (480, 320)
 
         incomesDoubleSpinBox_label = QLabel("Value", self.incomesWidget)
         incomesDoubleSpinBox_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
         incomesDoubleSpinBox_label.setGeometry(QRect(40, 80, 40, 20))
         self.incomesDoubleSpinBox = QDoubleSpinBox(self.incomesWidget)
-        self.incomesDoubleSpinBox.setMaximum(1000)                                         
+        self.incomesDoubleSpinBox.setMaximum(1000)
         self.incomesDoubleSpinBox.setDecimals(2)
         self.incomesDoubleSpinBox.setMinimum(0)
         self.incomesDoubleSpinBox.setGeometry(QRect(20, 100, 80, 20))
@@ -124,7 +188,7 @@ class WidgetGallery(QDialog):
         self.incomesDateEdit.setCalendarPopup(True)
         self.incomesDateEdit.setDisplayFormat("dd/MM/yy")
         self.incomesDateEdit.setDate(QDate.currentDate())
-        self.incomesDateEdit.setGeometry(QRect(110, 100, 80, 20))                        
+        self.incomesDateEdit.setGeometry(QRect(110, 100, 80, 20))
 
         incomesSpecificationLine_label = QLabel("Specification", self.incomesWidget)
         incomesSpecificationLine_label.setAlignment(Qt.AlignBottom | Qt.AlignHCenter)
@@ -145,6 +209,7 @@ class WidgetGallery(QDialog):
     def createSpreadsheetActionsLayout(self):
         self.spreadsheetActionsWidget = QWidget()
         self.spreadsheetActionsWidget.setGeometry(QRect(10, 10, 550, 300))
+        self.spreadsheetActionsWidget.size = (570, 320)
 
         access_spreadsheet_button = QPushButton("Access Spreadsheet",
                                                 self.spreadsheetActionsWidget)
@@ -163,6 +228,7 @@ class WidgetGallery(QDialog):
 
         categories_group = QGroupBox("Expenses Categories", self.spreadsheetActionsWidget)
         categories_group.setGeometry(QRect(10, 110, 525, 140))
+        categories_group.setStyleSheet("QGroupBox { font-weight: bold; } ")
         categories_layout = QHBoxLayout()
 
         self.addCategoryLine = QLineEdit()
@@ -194,6 +260,26 @@ class WidgetGallery(QDialog):
         categories_layout.addWidget(del_categories_widget)
 
         categories_group.setLayout(categories_layout)
+
+    def fillExpensesTableData(self):
+        latest_expenses = SpreadsheetHandler().get_latest_upload("expenses")
+
+        self.expensesTable.setRowCount(len(latest_expenses))
+
+        for row_index, row in enumerate(latest_expenses):
+            for column_index, cell_content in enumerate(row):
+                self.expensesTable.setItem(row_index, column_index,
+                                           QTableWidgetItem(cell_content))
+
+    def fillIncomesTableData(self):
+        latest_incomes = SpreadsheetHandler().get_latest_upload("incomes")
+
+        self.incomesTable.setRowCount(len(latest_incomes))
+
+        for row_index, row in enumerate(latest_incomes):
+            for column_index, cell_content in enumerate(row):
+                self.incomesTable.setItem(row_index, column_index,
+                                          QTableWidgetItem(cell_content))
 
     def addCategories(self, new_items):
         self.expenseCategoriesComboBox.insertItems(0, new_items)
@@ -248,7 +334,7 @@ class WidgetGallery(QDialog):
              ]
         ]
 
-        spreadsheet_hdl.append_data(data, range="Income")
+        spreadsheet_hdl.append_data(data, range="Incomes")
         spreadsheet_hdl.income_sort_by_date()
 
         alert = QMessageBox()
@@ -256,6 +342,14 @@ class WidgetGallery(QDialog):
         alert.setWindowIcon(QIcon(appctx.get_resource("submit.ico")))
         alert.setText("The income was submitted!")
         alert.exec_()
+
+    def updateExpensesTableButtonClicked(self):
+        self.expensesTable.clearContents()
+        self.fillExpensesTableData()
+
+    def updateIncomesTableButtonClicked(self):
+        self.incomesTable.clearContents()
+        self.fillIncomesTableData()
 
     def accessSpreadsheetButtonClicked(self):
         spreadsheet_hdl = SpreadsheetHandler()
@@ -349,9 +443,6 @@ class WidgetGallery(QDialog):
         alert.exec_()
 
     def adjustTabWidgetSize(self):
-        current_tab = self.tabsWidget.currentIndex()
-
-        if current_tab == 0 or current_tab == 2:
-            self.resize(570, 320)
-        else:
-            self.resize(480, 320)
+        current_tab = self.tabsWidget.currentWidget()
+        self.resize(current_tab.size[0],
+                    current_tab.size[1])
