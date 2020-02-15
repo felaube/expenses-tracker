@@ -922,7 +922,7 @@
                         "values": [
                             {
                                 "userEnteredValue": {
-                                    "formulaValue": "=SUMIF(Income!$B:$B, Resources!$A1, Income!$D:$D)"
+                                    "formulaValue": "=SUMIF(Incomes!$B:$B, Resources!$A1, Incomes!$D:$D)"
                                 }
                             }
                         ]
