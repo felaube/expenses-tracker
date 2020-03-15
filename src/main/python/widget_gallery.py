@@ -309,6 +309,10 @@ class WidgetGallery(QDialog):
              ]
         ]
 
+        for index in range(len(data[0])):
+            if data[0][index] == "":
+                data[0][index] = "-"
+
         if self.vrCheckBox.checkState() == 2:
             data[0].append("VR")
 
@@ -333,6 +337,10 @@ class WidgetGallery(QDialog):
              self.incomesObservationLine.text()
              ]
         ]
+
+        for index in range(len(data[0])):
+            if data[0][index] == "":
+                data[0][index] = "-"
 
         spreadsheet_hdl.append_data(data, range="Incomes")
         spreadsheet_hdl.income_sort_by_date()
