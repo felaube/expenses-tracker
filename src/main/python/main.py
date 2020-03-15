@@ -10,7 +10,7 @@ from spreadsheet_handler import SpreadsheetHandler
 from widget_gallery import WidgetGallery
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5.QtWidgets import QApplication, QMessageBox
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import Qt
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
@@ -82,6 +82,7 @@ if __name__ == '__main__':
     spreadsheet_hdl.create_spreadsheet()
 
     appctxt = ApplicationContext()
+    appctxt.app.setFont(QFont("Fixed", 8))
     gallery = WidgetGallery()
     gallery.show()
     sys.exit(appctxt.app.exec_())
