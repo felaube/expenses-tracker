@@ -1,6 +1,6 @@
 This project intends to develop an integrated platform in Android (TODO), Ubuntu and Windows to track and categorize expenses and incomes.
 
-We use Google Sheets to store the incomes and expenses, the communication is provided by its Python API.
+A Google Sheets spreadsheet is used to store the incomes and expenses. The communication is provided by Google Sheet's Python API.
 
 For now, the application is implemented only for Windows and Ubuntu.
 Do not install the application on the "Programs File" folder.
