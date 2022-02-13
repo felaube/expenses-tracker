@@ -105,8 +105,8 @@ class WidgetGallery(QDialog):
         self.expenseObservationLine = QLineEdit(self.expensesWidget)
         self.expenseObservationLine.setGeometry(QRect(420, 100, 115, 20))
 
-        self.vrCheckBox = QCheckBox("Gasto com VR", self.expensesWidget)
-        self.vrCheckBox.setGeometry(QRect(10, 140, 110, 20))
+        self.nonRecurringExpenseBox = QCheckBox("Non-recurring expense", self.expensesWidget)
+        self.nonRecurringExpenseBox.setGeometry(QRect(10, 140, 130, 20))
 
         submitbutton = QPushButton("Submit Expense", self.expensesWidget)
         submitbutton.clicked.connect(self.submitExpenseButtonClicked)
@@ -299,12 +299,18 @@ class WidgetGallery(QDialog):
         spreadsheet_hdl = SpreadsheetHandler()
         appctx = ApplicationContext()
 
+        if self.nonRecurringExpenseBox.checkState() == 2:
+            recurring_status = "Non-Recurring"
+        else:
+            recurring_status = "Recurring"
+
         data = [
             ["=MONTH(\""+self.expenseDateEdit.date().toString("MM/dd/yyyy")+"\")",
              self.expenseDateEdit.date().toString("MM/dd/yyyy"),
              str(self.expenseDoubleSpinBox.value()),
              self.expenseCategoriesComboBox.currentText(),
              self.expenseSpecificationLine.text(),
+             recurring_status,
              self.expenseObservationLine.text()
              ]
         ]
@@ -312,9 +318,6 @@ class WidgetGallery(QDialog):
         for index in range(len(data[0])):
             if data[0][index] == "":
                 data[0][index] = "-"
-
-        if self.vrCheckBox.checkState() == 2:
-            data[0].append("VR")
 
         spreadsheet_hdl.append_data(data, range="Expenses")
         spreadsheet_hdl.expenses_sort_by_date()
