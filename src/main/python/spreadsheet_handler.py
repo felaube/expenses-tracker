@@ -24,7 +24,12 @@ class Singleton(type):
 class SpreadsheetHandler(metaclass=Singleton):
     def __init__(self, credentials=None, file_name=None, spreadsheet_id=None):
         self.credentials = credentials
-        self.service = build('sheets', 'v4', credentials=self.credentials)
+        try:
+            self.service = build('sheets', 'v4', credentials=self.credentials)
+        except:
+            DISCOVERY_SERVICE_URL = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
+            self.service = build('sheets', 'v4', credentials=self.credentials, discoveryServiceUrl=DISCOVERY_SERVICE_URL)
+        
         self.spreadsheet_id = spreadsheet_id
         self.file_name = file_name
 

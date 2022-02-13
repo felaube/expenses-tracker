@@ -21,7 +21,12 @@ class Singleton(type):
 class DriveHandler(metaclass=Singleton):
     def __init__(self, credentials=None):
         self.credentials = credentials
-        self.service = build('drive', 'v3', credentials=self.credentials)
+        
+        try:
+            self.service = build('drive', 'v3', credentials=self.credentials)
+        except:
+            DISCOVERY_SERVICE_URL = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+            self.service = build('drive', 'v3', credentials=self.credentials, discoveryServiceUrl=DISCOVERY_SERVICE_URL)
 
     def get_spreadsheet_id(self, file_name):
 
