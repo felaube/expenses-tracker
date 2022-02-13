@@ -19,21 +19,22 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
 
 if __name__ == '__main__':
     if not os.path.exists('credentials.json'):
-        webbrowser.open("https://developers.google.com/sheets/api/quickstart/python")
-        error_message = "In order to use this application, " + \
+        
+        error_message = "The application did not find the 'credentials.json' file." + \
+                        " In order to use this application, " + \
                         "you must first enable the Google " + \
-                        "Sheets API on your google account. " + \
-                        "Please acccess " + \
+                        "Sheets API on your google account." + \
+                        "\n\nPlease acccess " + \
                         "https://developers.google.com/sheets/api/quickstart/python" + \
                         ", go to Step 1, dowload the configuration" + \
                         " file 'credentials.json' " + \
                         "and save it on the application folder. " + \
-                        "\nThen, access " + \
+                        "\n\nThen, access " + \
                         "https://developers.google.com/drive/api/v3/enable-drive-api " + \
                         "to enable the Drive API on your google account. " + \
                         "After following the steps above, run the application again."
         print(error_message)
-        webbrowser.open("https://developers.google.com/drive/api/v3/enable-drive-api")
+
         app = QApplication([])
         error_window = QMessageBox()
         error_window.setWindowTitle("Expenses Tracker")
@@ -43,6 +44,10 @@ if __name__ == '__main__':
         error_window.setStandardButtons(QMessageBox.Ok)
         error_window.setDefaultButton(QMessageBox.Ok)
         error_window.setTextInteractionFlags(Qt.TextSelectableByMouse)
+
+        webbrowser.open("https://developers.google.com/sheets/api/quickstart/python")
+        webbrowser.open("https://developers.google.com/drive/api/v3/enable-drive-api")
+
         sys.exit(error_window.exec_())
 
     CREDS = None
