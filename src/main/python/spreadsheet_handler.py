@@ -76,8 +76,7 @@ class SpreadsheetHandler(metaclass=Singleton):
 
             self.format_spreadsheet()
 
-        finally:
-            return self.spreadsheet_id
+        return self.spreadsheet_id
 
     def write_data(self, data, range, value_input_option='USER_ENTERED'):
         body = {
