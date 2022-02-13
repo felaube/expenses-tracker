@@ -86,8 +86,8 @@ if __name__ == '__main__':
     spreadsheet_hdl = SpreadsheetHandler(CREDS, file_name="Expenses Tracker")
     spreadsheet_hdl.create_spreadsheet()
 
-    appctxt = ApplicationContext()
-    appctxt.app.setFont(QFont("Fixed", 8))
+    application_context = ApplicationContext()
+    application_context.app.setFont(QFont("Fixed", 8))
     gallery = WidgetGallery()
     gallery.show()
-    sys.exit(appctxt.app.exec_())
+    sys.exit(application_context.app.exec_())
