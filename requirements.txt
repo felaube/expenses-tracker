@@ -2,7 +2,7 @@ google-api-python-client==2.37.0
 google-auth-httplib2==0.1.0 
 google-auth-oauthlib==0.4.6
 PyQt5==5.9.2
-PyInstaller==3.4
+PyInstaller==3.6
 fbs==1.0.3
 fbs[upload]
 pypiwin32==223
