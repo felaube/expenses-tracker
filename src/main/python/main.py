@@ -2,10 +2,8 @@ import os
 import sys
 import pickle
 import webbrowser
-from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from drive_handler import DriveHandler
 from spreadsheet_handler import SpreadsheetHandler
 from widget_gallery import WidgetGallery
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
@@ -18,8 +16,9 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
           'https://www.googleapis.com/auth/drive.file']
 
 if __name__ == '__main__':
+
     if not os.path.exists('credentials.json'):
-        
+
         error_message = "The application did not find the 'credentials.json' file." + \
                         " In order to use this application, " + \
                         "you must first enable the Google " + \
